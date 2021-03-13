@@ -163,7 +163,9 @@ module Protocol =
 
         type JsonProtocol () =
             member inline _.writeMessage (message: HubMessage<'ClientStreamFromApi,'ClientApi,'ClientApi,'ClientStreamToApi>) =
-                TextMessageFormat.write(Json.serialize message)
+                message
+                |> Json.serialize
+                |> TextMessageFormat.write
                 |> U2.Case1
 
             member inline _.processMsg<'ServerApi,'ServerStreamApi> (parsedRaw: Json, msgType: MessageType) =
